@@ -1,6 +1,7 @@
 package timmyadapter_test
 
 import (
+	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 	timmyadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/TimmyAdapter"
 	"testing"
 )
@@ -10,23 +11,20 @@ func TestSubtract(t *testing.T) {
 	friend := timmyadapter.CreateTimmyAdapter()
 
 	testTable := []struct {
-		firstValue     int
-		secondValue    int
-		expectedResult int
+		Operation      domainstructs.Operation
+		ExpectedResult domainstructs.Result
 	}{
-		{firstValue: 5, secondValue: 5, expectedResult: 0},
+		{Operation: domainstructs.Operation{FirstOperand: 5, SecondOperand: 5}, ExpectedResult: domainstructs.Result{Is: 0}},
+		{Operation: domainstructs.Operation{FirstOperand: 5, SecondOperand: 0}, ExpectedResult: domainstructs.Result{Is: 5}},
 	}
 
 	for _, testCase := range testTable {
 
-		obtainedResult := friend.Subtract(testCase.firstValue, testCase.secondValue)
+		result := friend.Subtract(testCase.Operation)
 
-		if obtainedResult != testCase.expectedResult {
-
-			t.Errorf("Wrong result. Expected %v, got; %v", testCase.expectedResult, obtainedResult)
-
+		if result != testCase.ExpectedResult {
+			t.Fatalf("Expected %d as a result, got: %d", testCase.ExpectedResult, result)
 		}
 
 	}
-
 }

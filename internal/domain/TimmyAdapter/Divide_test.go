@@ -1,6 +1,7 @@
 package timmyadapter_test
 
 import (
+	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 	timmyadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/TimmyAdapter"
 	"testing"
 )
@@ -10,29 +11,24 @@ func TestDivide(t *testing.T) {
 	friend := timmyadapter.CreateTimmyAdapter()
 
 	testTable := []struct {
-		firstValue     int
-		secondValue    int
-		expectedResult int
+		Operation      domainstructs.Operation
+		ExpectedResult domainstructs.Result
 		expectedError  error
 	}{
-		{firstValue: 5, secondValue: 5, expectedResult: 1, expectedError: nil},
-		{firstValue: 5, secondValue: 0, expectedResult: 0, expectedError: timmyadapter.DivideByZero},
+		{Operation: domainstructs.Operation{FirstOperand: 5, SecondOperand: 5}, ExpectedResult: domainstructs.Result{Is: 1}, expectedError: nil},
+		{Operation: domainstructs.Operation{FirstOperand: 5, SecondOperand: 0}, ExpectedResult: domainstructs.Result{Is: 0}, expectedError: &timmyadapter.DivideByZero{}},
 	}
 
 	for _, testCase := range testTable {
 
-		obtainedResult, err := friend.Divide(testCase.firstValue, testCase.secondValue)
+		result, err := friend.Divide(testCase.Operation)
 
 		if err != testCase.expectedError {
-
-			t.Errorf("Expected %v error, got; %v", testCase.expectedError, err)
-
+			t.Fatalf("Expected %v error, got: %v", testCase.expectedError, err)
 		}
 
-		if obtainedResult != testCase.expectedResult {
-
-			t.Errorf("Wrong result. Expected %v , got; %v", testCase.expectedResult, obtainedResult)
-
+		if result != testCase.ExpectedResult {
+			t.Fatalf("Expected %d as a result, got: %d", testCase.ExpectedResult, result)
 		}
 
 	}
