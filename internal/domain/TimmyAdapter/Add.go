@@ -1,9 +1,33 @@
 package timmyadapter
 
-func (ta *TimmyAdapter) Add(firstValue, secondValue int) (result int) {
+import (
+	"encoding/json"
+	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
+)
 
-	result = firstValue + secondValue
+func (ta *TimmyAdapter) Add(data []byte) ([]byte, error) {
 
-	return result
+	var operation domainstructs.Operation
+
+	err := json.Unmarshal(data, &operation)
+
+	if err != nil {
+
+		return nil, &WrongBodyForOperation{}
+
+	}
+
+	var result domainstructs.Result
+
+	result.Is = operation.FirstOperand + operation.SecondOperand
+
+	resp, err := json.Marshal(result)
+
+	if err != nil {
+
+		return nil, err
+	}
+
+	return resp, nil
 
 }

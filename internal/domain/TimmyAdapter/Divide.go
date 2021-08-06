@@ -1,19 +1,37 @@
 package timmyadapter
 
-import "errors"
+import (
+	"encoding/json"
+	"errors"
+	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
+)
 
-var DivideByZero = errors.New("Cannot divide by 0, do you want to destroy the world?")
+var divideByZero = errors.New("Cannot divide by 0, do you want to destroy the world?")
 
-func (ta *TimmyAdapter) Divide(firstValue, secondValue int) (result int, err error) {
+func (ta *TimmyAdapter) Divide(data []byte) ([]byte, error) {
 
-	if secondValue == 0 {
+	var operation domainstructs.Operation
 
-		return 0, DivideByZero
+	err := json.Unmarshal(data, &operation)
 
+	if err != nil {
+		return nil, &WrongBodyForOperation{}
 	}
 
-	result = firstValue / secondValue
+	if operation.SecondOperand == 0 {
+		return nil, &DivideByZero{}
+	}
 
-	return result, nil
+	var result domainstructs.Result
+
+	result.Is = operation.FirstOperand / operation.SecondOperand
+
+	resp, err := json.Marshal(result)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 
 }

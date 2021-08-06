@@ -1,9 +1,34 @@
 package timmyadapter
 
-func (ta *TimmyAdapter) Multiply(firstValue, secondValue int) (result int) {
+import (
+	"encoding/json"
+	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
+)
 
-	result = firstValue * secondValue
+func (ta *TimmyAdapter) Multiply(data []byte) ([]byte, error) {
 
-	return result
+	var operation domainstructs.Operation
+
+	err := json.Unmarshal(data, &operation)
+
+	if err != nil {
+
+		return nil, &WrongBodyForOperation{}
+
+	}
+
+	var result domainstructs.Result
+
+	result.Is = operation.FirstOperand * operation.SecondOperand
+
+	resp, err := json.Marshal(result)
+
+	if err != nil {
+
+		return nil, err
+
+	}
+
+	return resp, nil
 
 }
