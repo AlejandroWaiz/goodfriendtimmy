@@ -28,6 +28,7 @@ func (ma *MuxAdapter) MultiplyHttpHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	result := ma.domainport.Multiply(operation)
+	json.NewEncoder(w).Encode(result.Is)
 
 	web.Success(result, 200)
 

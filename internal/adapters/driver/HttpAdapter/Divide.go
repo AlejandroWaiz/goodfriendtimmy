@@ -34,6 +34,8 @@ func (ma *MuxAdapter) DivideHttpHandler(w http.ResponseWriter, r *http.Request) 
 		log.Println(err)
 	}
 
+	json.NewEncoder(w).Encode(result.Is)
+
 	web.Success(result, 200)
 
 }

@@ -1,10 +1,10 @@
 package domainstructs
 
 type Operation struct {
-	FirstOperand  int
-	SecondOperand int
+	FirstOperand  float64
+	SecondOperand float64
 }
 
 type Result struct {
-	Is int
+	Is float64
 }

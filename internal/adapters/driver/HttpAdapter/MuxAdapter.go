@@ -20,10 +20,11 @@ func (ma *MuxAdapter) ListenAndServe() {
 
 	port, router := createRouter()
 
-	router.HandleFunc("/Add", ma.AddHttpHandler)
-	router.HandleFunc("/Subtract", ma.SubtractHttpHandler)
-	router.HandleFunc("/Divide", ma.DivideHttpHandler)
-	router.HandleFunc("/Multiply", ma.MultiplyHttpHandler)
+	router.HandleFunc("/", ma.HealthCheck).Methods("GET")
+	router.HandleFunc("/Add", ma.AddHttpHandler).Methods("POST")
+	router.HandleFunc("/Subtract", ma.SubtractHttpHandler).Methods("POST")
+	router.HandleFunc("/Divide", ma.DivideHttpHandler).Methods("POST")
+	router.HandleFunc("/Multiply", ma.MultiplyHttpHandler).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(port, router))
 

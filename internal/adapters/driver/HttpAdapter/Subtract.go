@@ -28,6 +28,7 @@ func (ma *MuxAdapter) SubtractHttpHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	result := ma.domainport.Subtract(operation)
+	json.NewEncoder(w).Encode(result.Is)
 
 	web.Success(result, 200)
 

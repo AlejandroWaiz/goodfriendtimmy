@@ -28,6 +28,7 @@ func (ma *MuxAdapter) AddHttpHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	result := ma.domainport.Add(operation)
+	json.NewEncoder(w).Encode(result.Is)
 
 	web.Success(result, 200)
 
