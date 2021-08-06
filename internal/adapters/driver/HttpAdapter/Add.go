@@ -1,21 +1,34 @@
 package muxadapter
 
 import (
-	"github.com/AlejandroWaiz/goodfriendtimmy/infrastructure/HttpResponseMock"
+	"encoding/json"
+	web "github.com/AlejandroWaiz/goodfriendtimmy/infrastructure/HttpResponseMock"
+	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
-func (ma *MuxAdapter) Add(w http.ResponseWriter, r *http.Request) []byte {
+func (ma *MuxAdapter) AddHttpHandler(w http.ResponseWriter, r *http.Request) {
 
 	body, err := ioutil.ReadAll(r.Body)
 
 	if err != nil {
 
-		HttpResponseMock.ErrInvalidJSON.Send(w)
+		web.ErrInvalidJSON.Send(w)
 
 	}
 
-	return body
+	var operation domainstructs.Operation
+
+	err = json.Unmarshal(body, &operation)
+
+	if err != nil {
+		log.Printf("Sorry, got this err: %v", err)
+	}
+
+	result := ma.domainport.Add(operation)
+
+	web.Success(result, 200)
 
 }
