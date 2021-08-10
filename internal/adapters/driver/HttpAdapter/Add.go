@@ -3,9 +3,10 @@ package muxadapter
 import (
 	"encoding/json"
 	web "github.com/AlejandroWaiz/goodfriendtimmy/infrastructure/HttpResponseMock"
+	"log"
+
 	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -24,12 +25,18 @@ func (ma *MuxAdapter) AddHttpHandler(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &operation)
 
 	if err != nil {
-		log.Printf("Sorry, got this err: %v", err)
+		web.ErrInvalidJSON.Send(w)
 	}
 
 	result := ma.domainport.Add(operation)
-	json.NewEncoder(w).Encode(result.Is)
 
-	web.Success(result, 200)
+	err = json.NewEncoder(w).Encode(result)
+	log.Printf("The result in the real func is: %v", result.Is)
+
+	if err != nil {
+		web.InternalError.Send(w)
+	}
+
+	//
 
 }
