@@ -16,7 +16,11 @@ func (ma *MuxAdapter) DivideHttpHandler(w http.ResponseWriter, r *http.Request) 
 
 	if err != nil {
 
-		web.ErrInvalidJSON.Send(w)
+		err = web.ErrInvalidJSON.Send(w)
+
+		if err != nil {
+			log.Fatal(err)
+		}
 
 	}
 

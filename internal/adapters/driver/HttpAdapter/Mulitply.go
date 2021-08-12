@@ -16,7 +16,7 @@ func (ma *MuxAdapter) MultiplyHttpHandler(w http.ResponseWriter, r *http.Request
 
 	if err != nil {
 
-		web.ErrInvalidJSON.Send(w)
+		err = web.ErrInvalidJSON.Send(w)
 
 	}
 

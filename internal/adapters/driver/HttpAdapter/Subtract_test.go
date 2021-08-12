@@ -95,3 +95,21 @@ func TestSubtract(t *testing.T) {
 	}
 
 }
+
+func TestSubtractWithBadBodyRequest(t *testing.T) {
+
+	recorder := httptest.NewRecorder()
+
+	//errReader declared in Common_test.go file
+	request, err := http.NewRequest("POST", "http://localhost:8080/Subtract", errReader(0))
+
+	if err != nil {
+		t.Log(err)
+	}
+
+	timmy := timmyadapter.CreateTimmyAdapter()
+	muxAdapter := MuxAdapter{domainport: timmy}
+
+	muxAdapter.SubtractHttpHandler(recorder, request)
+
+}

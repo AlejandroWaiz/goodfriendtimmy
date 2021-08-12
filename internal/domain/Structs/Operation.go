@@ -1,8 +1,8 @@
 package domainstructs
 
 type Operation struct {
-	FirstOperand  float64
-	SecondOperand float64
+	FirstOperand  float64 `json:",omitempty"`
+	SecondOperand float64 `json:",omitempty"`
 }
 
 type Result struct {

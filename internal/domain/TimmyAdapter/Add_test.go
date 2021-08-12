@@ -1,9 +1,10 @@
 package timmyadapter_test
 
 import (
-	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
-	"github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/TimmyAdapter"
 	"testing"
+
+	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
+	timmyadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/TimmyAdapter"
 )
 
 func TestAdd(t *testing.T) {

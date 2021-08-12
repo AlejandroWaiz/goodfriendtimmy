@@ -95,3 +95,21 @@ func TestAdd(t *testing.T) {
 	}
 
 }
+
+func TestAddWithBadBodyRequest(t *testing.T) {
+
+	recorder := httptest.NewRecorder()
+
+	//errReader declared in Common_test.go file
+	request, err := http.NewRequest("POST", "http://localhost:8080/Add", errReader(0))
+
+	if err != nil {
+		t.Log(err)
+	}
+
+	timmy := timmyadapter.CreateTimmyAdapter()
+	muxAdapter := MuxAdapter{domainport: timmy}
+
+	muxAdapter.AddHttpHandler(recorder, request)
+
+}

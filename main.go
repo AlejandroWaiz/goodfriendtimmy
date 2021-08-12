@@ -1,15 +1,15 @@
 package main
 
 import (
-	muxadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/adapters/driver/HttpAdapter"
-	timmyadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/TimmyAdapter"
 	"log"
-	"os"
+
+	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
+	"github.com/goccy/go-json"
 )
 
 func main() {
 
-	err := os.Setenv("MuxPort", "3000")
+	/* err := os.Setenv("MuxPort", "3000")
 
 	if err != nil {
 
@@ -21,6 +21,15 @@ func main() {
 
 	MuxPort := muxadapter.CreateMuxAdapter(domainPort)
 
-	MuxPort.ListenAndServe()
+	MuxPort.ListenAndServe() */
 
+	var result domainstructs.Result = domainstructs.Result{Is: 3}
+
+	finalresult, err := json.Marshal(result)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println(finalresult)
 }

@@ -18,7 +18,6 @@ func (ma *MuxAdapter) AddHttpHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 
 		web.ErrInvalidJSON.Send(w)
-		return
 
 	}
 
@@ -29,7 +28,6 @@ func (ma *MuxAdapter) AddHttpHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 
 		web.ErrInvalidJSON.Send(w)
-		return
 
 	}
 
@@ -38,15 +36,5 @@ func (ma *MuxAdapter) AddHttpHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 	json.NewEncoder(w).Encode(result)
-
-	/*err = json.NewEncoder(w).Encode(result)
-	if err != nil {
-
-		xerr := web.InternalError.Send(w)
-
-		if xerr != nil {
-			w.WriteHeader(500)
-		}
-	} */
 
 }

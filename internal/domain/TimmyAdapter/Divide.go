@@ -1,6 +1,8 @@
 package timmyadapter
 
 import (
+	"log"
+
 	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 )
 
@@ -12,7 +14,8 @@ func (ta *TimmyAdapter) Divide(operation domainstructs.Operation) (result domain
 
 	}
 
-	result.Is = operation.FirstOperand / operation.SecondOperand
+	result.Is = float64(operation.FirstOperand) / float64(operation.SecondOperand)
+	log.Printf("The result is %v", result.Is)
 
 	return result, nil
 
