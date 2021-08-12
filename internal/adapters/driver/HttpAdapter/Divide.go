@@ -2,11 +2,12 @@ package muxadapter
 
 import (
 	"encoding/json"
-	web "github.com/AlejandroWaiz/goodfriendtimmy/infrastructure/HttpResponseMock"
-	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	web "github.com/AlejandroWaiz/goodfriendtimmy/infrastructure/HttpResponseMock"
+	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 )
 
 func (ma *MuxAdapter) DivideHttpHandler(w http.ResponseWriter, r *http.Request) {
@@ -34,8 +35,8 @@ func (ma *MuxAdapter) DivideHttpHandler(w http.ResponseWriter, r *http.Request) 
 		log.Println(err)
 	}
 
-	json.NewEncoder(w).Encode(result.Is)
-
-	web.Success(result, 200)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	json.NewEncoder(w).Encode(result)
 
 }

@@ -2,12 +2,13 @@ package muxadapter
 
 import (
 	"encoding/json"
-	web "github.com/AlejandroWaiz/goodfriendtimmy/infrastructure/HttpResponseMock"
-	"log"
 
-	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
+	web "github.com/AlejandroWaiz/goodfriendtimmy/infrastructure/HttpResponseMock"
+
 	"io/ioutil"
 	"net/http"
+
+	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 )
 
 func (ma *MuxAdapter) AddHttpHandler(w http.ResponseWriter, r *http.Request) {
@@ -17,6 +18,7 @@ func (ma *MuxAdapter) AddHttpHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 
 		web.ErrInvalidJSON.Send(w)
+		return
 
 	}
 
@@ -25,18 +27,26 @@ func (ma *MuxAdapter) AddHttpHandler(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &operation)
 
 	if err != nil {
+
 		web.ErrInvalidJSON.Send(w)
+		return
+
 	}
 
 	result := ma.domainport.Add(operation)
 
-	err = json.NewEncoder(w).Encode(result)
-	log.Printf("The result in the real func is: %v", result.Is)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	json.NewEncoder(w).Encode(result)
 
+	/*err = json.NewEncoder(w).Encode(result)
 	if err != nil {
-		web.InternalError.Send(w)
-	}
 
-	//
+		xerr := web.InternalError.Send(w)
+
+		if xerr != nil {
+			w.WriteHeader(500)
+		}
+	} */
 
 }

@@ -12,7 +12,7 @@ import (
 	timmyadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/TimmyAdapter"
 )
 
-func TestAdd(t *testing.T) {
+func TestDivide(t *testing.T) {
 
 	testTable := []struct {
 		FirstOperand  float64 `json:",omitempty"`
@@ -21,9 +21,10 @@ func TestAdd(t *testing.T) {
 		ExpHttpStatus int
 		ExpHttpHeader string
 		ExpBody       domainstructs.Result
+		ExpErr        error
 	}{
-		{FirstOperand: 1, SecondOperand: 2, ExpResult: 3, ExpHttpStatus: 200, ExpHttpHeader: "application/json", ExpBody: domainstructs.Result{Is: 3}},
-		{FirstOperand: 1, ExpHttpHeader: "application/json", ExpBody: domainstructs.Result{Is: 1}, ExpResult: 1, ExpHttpStatus: 200},
+		{FirstOperand: 5, SecondOperand: 5, ExpResult: 1, ExpHttpStatus: 200, ExpHttpHeader: "application/json", ExpBody: domainstructs.Result{Is: 1}, ExpErr: nil},
+		{FirstOperand: 1, SecondOperand: 0, ExpResult: 0, ExpHttpStatus: 400, ExpHttpHeader: "application/json", ExpBody: domainstructs.Result{Is: 0}, ExpErr: &timmyadapter.DivideByZero{}},
 	}
 
 	for i, testCase := range testTable {
@@ -42,7 +43,7 @@ func TestAdd(t *testing.T) {
 			t.Log(err)
 		}
 
-		request, err := http.NewRequest("POST", "http://localhost:8080/Add", buf)
+		request, err := http.NewRequest("POST", "http://localhost:8080/Divide", buf)
 		request.Header.Set("Content-type", "application/json")
 
 		if err != nil {
@@ -54,7 +55,7 @@ func TestAdd(t *testing.T) {
 		timmy := timmyadapter.CreateTimmyAdapter()
 		muxAdapter := MuxAdapter{domainport: timmy}
 
-		muxAdapter.AddHttpHandler(recorder, request)
+		muxAdapter.DivideHttpHandler(recorder, request)
 
 		response := recorder.Result()
 
@@ -71,25 +72,25 @@ func TestAdd(t *testing.T) {
 		err = json.Unmarshal(httpbody, &finalresult)
 
 		if finalresult != testCase.ExpBody {
-			t.Errorf("Expected %#v body, got %#v in case %v", testCase.ExpBody, finalresult, i)
+			t.Errorf("Expected %#v on body, got %#v in case %v", testCase.ExpBody, finalresult, i)
 		}
 
 		if finalresult.Is != testCase.ExpResult {
-			t.Errorf("Expected %v result; got %v", testCase.ExpResult, finalresult.Is)
+			t.Errorf("Expected %v on result; got %v in case %v", testCase.ExpResult, finalresult.Is, i)
 		}
 
 		if response.StatusCode != testCase.ExpHttpStatus {
-			t.Errorf("Expected %v status code, got %v", testCase.ExpHttpStatus, response.StatusCode)
+			t.Errorf("Expected %v on status code, got %v in case %v", testCase.ExpHttpStatus, response.StatusCode, i)
 		}
 
 		if header := response.Header.Get("Content-Type"); header != testCase.ExpHttpHeader {
-			t.Errorf("Expected %v header; got %v", testCase.ExpHttpHeader, header)
+			t.Errorf("Expected %v on header; got %v in case %v", testCase.ExpHttpHeader, header, i)
 		}
 
 		err = response.Body.Close()
 
 		if err != nil {
-			t.Fatalf("Couldnt close body: %v", err)
+			t.Fatalf("Couldnt close body: %v in case %v", err, i)
 		}
 
 	}

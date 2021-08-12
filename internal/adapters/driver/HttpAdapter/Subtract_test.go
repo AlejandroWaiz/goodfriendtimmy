@@ -12,7 +12,7 @@ import (
 	timmyadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/TimmyAdapter"
 )
 
-func TestAdd(t *testing.T) {
+func TestSubtract(t *testing.T) {
 
 	testTable := []struct {
 		FirstOperand  float64 `json:",omitempty"`
@@ -22,7 +22,7 @@ func TestAdd(t *testing.T) {
 		ExpHttpHeader string
 		ExpBody       domainstructs.Result
 	}{
-		{FirstOperand: 1, SecondOperand: 2, ExpResult: 3, ExpHttpStatus: 200, ExpHttpHeader: "application/json", ExpBody: domainstructs.Result{Is: 3}},
+		{FirstOperand: 1, SecondOperand: 2, ExpResult: -1, ExpHttpStatus: 200, ExpHttpHeader: "application/json", ExpBody: domainstructs.Result{Is: -1}},
 		{FirstOperand: 1, ExpHttpHeader: "application/json", ExpBody: domainstructs.Result{Is: 1}, ExpResult: 1, ExpHttpStatus: 200},
 	}
 
@@ -42,7 +42,7 @@ func TestAdd(t *testing.T) {
 			t.Log(err)
 		}
 
-		request, err := http.NewRequest("POST", "http://localhost:8080/Add", buf)
+		request, err := http.NewRequest("POST", "http://localhost:8080/Subtract", buf)
 		request.Header.Set("Content-type", "application/json")
 
 		if err != nil {
@@ -54,7 +54,7 @@ func TestAdd(t *testing.T) {
 		timmy := timmyadapter.CreateTimmyAdapter()
 		muxAdapter := MuxAdapter{domainport: timmy}
 
-		muxAdapter.AddHttpHandler(recorder, request)
+		muxAdapter.SubtractHttpHandler(recorder, request)
 
 		response := recorder.Result()
 
