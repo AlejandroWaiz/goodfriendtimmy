@@ -2,10 +2,12 @@ package muxadapter
 
 import (
 	"fmt"
-	"github.com/AlejandroWaiz/goodfriendtimmy/internal/domain"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/AlejandroWaiz/goodfriendtimmy/internal/domain"
+	"github.com/gorilla/mux"
 )
 
 type MuxAdapter struct {
@@ -32,7 +34,7 @@ func (ma *MuxAdapter) ListenAndServe() {
 
 func createRouter() (string, *mux.Router) {
 
-	port := fmt.Sprintf(":%s", "3000")
+	port := fmt.Sprintf(":%s", os.Getenv("MuxPort"))
 	router := mux.NewRouter().StrictSlash(true)
 
 	fmt.Println("Starting router...")

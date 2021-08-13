@@ -2,14 +2,15 @@ package main
 
 import (
 	"log"
+	"os"
 
-	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
-	"github.com/goccy/go-json"
+	cmdadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/adapters/driver/CmdAdapter"
+	timmyadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/TimmyAdapter"
 )
 
 func main() {
 
-	/* err := os.Setenv("MuxPort", "3000")
+	err := os.Setenv("MuxPort", "3000")
 
 	if err != nil {
 
@@ -19,17 +20,8 @@ func main() {
 
 	domainPort := timmyadapter.CreateTimmyAdapter()
 
-	MuxPort := muxadapter.CreateMuxAdapter(domainPort)
+	driverHandler := cmdadapter.CreateCmdAdapter(domainPort)
 
-	MuxPort.ListenAndServe() */
+	driverHandler.ListenAndServe()
 
-	var result domainstructs.Result = domainstructs.Result{Is: 3}
-
-	finalresult, err := json.Marshal(result)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println(finalresult)
 }
