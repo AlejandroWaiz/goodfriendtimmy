@@ -2,9 +2,11 @@ package cmdadapter
 
 import "strconv"
 
-func (cmd *CmdAdapter) comprobeInput(input string) (value int, err error) {
+func (cmd *CmdAdapter) comprobeInput() (value int, err error) {
 
 	cmd.scanner.Scan()
+
+	input := cmd.scanner.Text()
 
 	value, err = strconv.Atoi(input)
 
