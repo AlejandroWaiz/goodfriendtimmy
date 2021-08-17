@@ -22,21 +22,17 @@ func comprobeNumberInput(r io.Reader) (value float64, err error) {
 		return
 	}
 
-	return
+	return value, err
 
 }
 
-func comprobeStringInput(r io.Reader) (input string, err error) {
+func comprobeStringInput(r io.Reader) (input string) {
 
 	readThis := bufio.NewScanner(r)
 
 	readThis.Scan()
 
 	input = readThis.Text()
-
-	if err != nil {
-		return
-	}
 
 	return
 

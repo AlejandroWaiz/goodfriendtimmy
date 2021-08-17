@@ -28,6 +28,8 @@ func TestListenAndServe(t *testing.T) {
 
 	cmdadap := CreateCmdAdapter(timmy)
 
+	cmdadap.ListenAndServe()
+
 	fmt.Println(cmdadap, testTable)
 
 }

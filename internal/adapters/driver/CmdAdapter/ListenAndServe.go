@@ -7,9 +7,7 @@ import (
 
 func (cmd *CmdAdapter) ListenAndServe() {
 
-	fmt.Println("what wea")
-
-	for k := 0; k < 1; k++ {
+	for k := 0; k < 2; k++ {
 
 		if i := 0; i == 0 {
 
@@ -23,7 +21,14 @@ func (cmd *CmdAdapter) ListenAndServe() {
 
 		}
 
-		cmd.StartCalculatorLoop(os.Stdin)
+		result, err := cmd.StartCalculatorLoop(os.Stdin, os.Stdin, os.Stdin)
+
+		if err != nil {
+			fmt.Printf("Sorry, i had this problem: %v\n", err)
+			return
+		}
+
+		fmt.Printf("Your result is %v!\n", result)
 
 	}
 }

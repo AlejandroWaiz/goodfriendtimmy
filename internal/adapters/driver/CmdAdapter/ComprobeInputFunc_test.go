@@ -50,14 +50,10 @@ func TestComprobeStringInput(t *testing.T) {
 
 		readThis := strings.NewReader(testthis.operation)
 
-		obtainedValue, err := comprobeStringInput(readThis)
-
-		if err != nil && testthis.expErr == false {
-			t.Log(err)
-		}
+		obtainedValue := comprobeStringInput(readThis)
 
 		if obtainedValue != testthis.expResult {
-			t.Error(err)
+			t.Errorf("Bad result, expected :%v, got: %v", testthis.expResult, obtainedValue)
 		}
 
 	}

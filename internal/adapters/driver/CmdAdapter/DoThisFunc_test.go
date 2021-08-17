@@ -16,13 +16,14 @@ func TestDoThisFunc(t *testing.T) {
 		FirstOperand  float64
 		SecondOperand float64
 		ExpResult     int
-		ExpError      error
+		ExpError      bool
 	}{
-		{"Normal add", "add", 1, 1, 2, nil},
-		{"Normal subtract", "subtract", 5, 3, 2, nil},
-		{"Normal Multiply", "multiply", 3, 5, 15, nil},
-		{"Normal divide", "divide", 6, 3, 2, nil},
-		{"Divide by zero", "divide", 10, 0, 0, &timmyadapter.DivideByZero{}},
+		{"Normal add", "add", 1, 1, 2, false},
+		{"Normal subtract", "subtract", 5, 3, 2, false},
+		{"Normal Multiply", "multiply", 3, 5, 15, false},
+		{"Normal divide", "divide", 6, 3, 2, false},
+		{"Bad typing", "dvide", 6, 3, 0, true},
+		{"Divide by zero", "divide", 10, 0, 0, true},
 	}
 
 	domain := timmyadapter.CreateTimmyAdapter()
@@ -34,7 +35,7 @@ func TestDoThisFunc(t *testing.T) {
 
 		response, err := cmd.doThis(testCase.operation, testCase.FirstOperand, testCase.SecondOperand)
 
-		if err != testCase.ExpError {
+		if err != nil && testCase.ExpError == false {
 
 			t.Errorf("Expected %v error, got %v on %v", testCase.ExpError, err, testCase.caseName)
 

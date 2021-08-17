@@ -8,50 +8,40 @@ import (
 	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 )
 
-func (cmd *CmdAdapter) StartCalculatorLoop(fromHere io.Reader) {
+func (cmd *CmdAdapter) StartCalculatorLoop(readOp, firstValue, secondValue io.Reader) (float64, error) {
 
 	var operation domainstructs.Operation
 
-	fmt.Println("What what would be the first value?")
+	fmt.Println("What would be the first value?")
 
 	var err error
 
-	operation.FirstOperand, err = comprobeNumberInput(fromHere)
+	operation.FirstOperand, err = comprobeNumberInput(firstValue)
 
 	if err != nil {
 		fmt.Printf("Introduce a valid number")
-		return
+		return 0, err
 	}
 
 	fmt.Printf("%v right? nice, and the second one?\n", operation.FirstOperand)
 
-	operation.SecondOperand, err = comprobeNumberInput(fromHere)
+	operation.SecondOperand, err = comprobeNumberInput(secondValue)
 
 	if err != nil {
 		log.Fatal(err)
-		return
+		return 0, err
 	}
 
 	fmt.Println("Okey, and what would be the operation?")
 
-	mathOperation, err := comprobeStringInput(fromHere)
+	mathOperation := comprobeStringInput(readOp)
 
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
+	fmt.Printf("%v, right? Lets see...\n", mathOperation)
 
 	var finalresult domainstructs.Result
 
 	finalresult.Is, err = cmd.doThis(mathOperation, operation.FirstOperand, operation.SecondOperand)
 
-	if err != nil {
-
-		fmt.Printf("Sorry, i had this problem: %v\n", err)
-		return
-	}
-
-	fmt.Printf("Your result is %v !\n", finalresult.Is)
-	fmt.Printf("%+v", finalresult)
+	return finalresult.Is, err
 
 }
