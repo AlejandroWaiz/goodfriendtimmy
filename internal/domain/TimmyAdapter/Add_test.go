@@ -25,7 +25,7 @@ func TestAdd(t *testing.T) {
 		result := friend.Add(testCase.Operation)
 
 		if result != testCase.ExpectedResult {
-			t.Fatalf("Expected %d as a result, got: %d", testCase.ExpectedResult, result)
+			t.Fatalf("Expected %v as a result, got: %v", testCase.ExpectedResult, result)
 		}
 
 	}

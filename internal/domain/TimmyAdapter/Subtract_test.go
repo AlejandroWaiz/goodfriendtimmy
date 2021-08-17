@@ -1,9 +1,10 @@
 package timmyadapter_test
 
 import (
+	"testing"
+
 	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 	timmyadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/TimmyAdapter"
-	"testing"
 )
 
 func TestSubtract(t *testing.T) {
@@ -23,7 +24,7 @@ func TestSubtract(t *testing.T) {
 		result := friend.Subtract(testCase.Operation)
 
 		if result != testCase.ExpectedResult {
-			t.Fatalf("Expected %d as a result, got: %d", testCase.ExpectedResult, result)
+			t.Fatalf("Expected %v as a result, got: %v", testCase.ExpectedResult, result)
 		}
 
 	}

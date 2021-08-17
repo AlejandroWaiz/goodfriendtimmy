@@ -1,14 +1,38 @@
 package cmdadapter
 
-import "strconv"
+import (
+	"bufio"
+	"io"
+	"strconv"
+)
 
-func (cmd *CmdAdapter) comprobeInput() (value int, err error) {
+func comprobeNumberInput(r io.Reader) (value float64, err error) {
 
-	cmd.scanner.Scan()
+	readThis := bufio.NewScanner(r)
 
-	input := cmd.scanner.Text()
+	readThis.Scan()
 
-	value, err = strconv.Atoi(input)
+	input := readThis.Text()
+
+	intInput, err := strconv.Atoi(input)
+
+	value = float64(intInput)
+
+	if err != nil {
+		return
+	}
+
+	return
+
+}
+
+func comprobeStringInput(r io.Reader) (input string, err error) {
+
+	readThis := bufio.NewScanner(r)
+
+	readThis.Scan()
+
+	input = readThis.Text()
 
 	if err != nil {
 		return

@@ -70,6 +70,10 @@ func TestSubtract(t *testing.T) {
 
 		err = json.Unmarshal(httpbody, &finalresult)
 
+		if err != nil {
+			t.Log(err)
+		}
+
 		if finalresult != testCase.ExpBody {
 			t.Errorf("Expected %#v body, got %#v in case %v", testCase.ExpBody, finalresult, i)
 		}

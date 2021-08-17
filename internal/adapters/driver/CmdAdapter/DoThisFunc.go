@@ -1,10 +1,14 @@
 package cmdadapter
 
-import domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
+import (
+	"errors"
 
-func (cmd *CmdAdapter) doThis(operation string, firstValue int, secondValue int) (response float64, err error) {
+	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
+)
 
-	operands := domainstructs.Operation{FirstOperand: float64(firstValue), SecondOperand: float64(secondValue)}
+func (cmd *CmdAdapter) doThis(operation string, firstValue float64, secondValue float64) (response float64, err error) {
+
+	operands := domainstructs.Operation{FirstOperand: firstValue, SecondOperand: secondValue}
 
 	if operation == "add" {
 
@@ -33,6 +37,6 @@ func (cmd *CmdAdapter) doThis(operation string, firstValue int, secondValue int)
 
 	}
 
-	return
+	return response, errors.New("not a valid operation")
 
 }

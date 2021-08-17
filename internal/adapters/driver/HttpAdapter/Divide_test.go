@@ -71,6 +71,10 @@ func TestDivide(t *testing.T) {
 
 		err = json.Unmarshal(httpbody, &finalresult)
 
+		if err != nil {
+			t.Log(err)
+		}
+
 		if finalresult != testCase.ExpBody {
 			t.Errorf("Expected %#v on body, got %#v in case %v", testCase.ExpBody, finalresult, i)
 		}

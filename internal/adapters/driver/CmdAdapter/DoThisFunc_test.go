@@ -13,8 +13,8 @@ func TestDoThisFunc(t *testing.T) {
 	testTable := []struct {
 		caseName      string
 		operation     string
-		FirstOperand  int
-		SecondOperand int
+		FirstOperand  float64
+		SecondOperand float64
 		ExpResult     int
 		ExpError      error
 	}{
@@ -22,7 +22,7 @@ func TestDoThisFunc(t *testing.T) {
 		{"Normal subtract", "subtract", 5, 3, 2, nil},
 		{"Normal Multiply", "multiply", 3, 5, 15, nil},
 		{"Normal divide", "divide", 6, 3, 2, nil},
-		{"Divide by zero", "divide", 10, 0, 10, &timmyadapter.DivideByZero{}},
+		{"Divide by zero", "divide", 10, 0, 0, &timmyadapter.DivideByZero{}},
 	}
 
 	domain := timmyadapter.CreateTimmyAdapter()
