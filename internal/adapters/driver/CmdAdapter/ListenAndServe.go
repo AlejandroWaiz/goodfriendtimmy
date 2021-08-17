@@ -7,7 +7,7 @@ import (
 
 func (cmd *CmdAdapter) ListenAndServe() {
 
-	for k := 0; k < 2; k++ {
+	for k := 0; k < 1; k++ {
 
 		if i := 0; i == 0 {
 
