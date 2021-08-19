@@ -1,5 +1,5 @@
-package drivenport
+package drivenadapters
 
-type DrivenPort interface {
+type DriverPort interface {
 	ListenAndServe()
 }
