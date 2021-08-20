@@ -12,7 +12,7 @@ func (ta *TimmyAdapter) Divide(operation domainstructs.Operation) (result domain
 
 	}
 
-	result.Is = float64(operation.FirstOperand) / float64(operation.SecondOperand)
+	result.Is = int64(operation.FirstOperand) / int64(operation.SecondOperand)
 
 	return result, nil
 

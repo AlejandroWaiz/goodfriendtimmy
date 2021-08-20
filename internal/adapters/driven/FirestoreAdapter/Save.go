@@ -14,7 +14,7 @@ func (fa *FirestoreAdapter) Save(data firestorestructs.OperationToStore) (firest
 		"Operation Type":   data.OperationIs,
 		"First Operand":    data.OperandsAre.FirstOperand,
 		"Second Operand":   data.OperandsAre.SecondOperand,
-		"Operation Result": data.ResultIs,
+		"Operation Result": data.Result,
 	})
 
 	if err != nil {

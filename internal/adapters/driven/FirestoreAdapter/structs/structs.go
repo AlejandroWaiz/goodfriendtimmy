@@ -3,8 +3,8 @@ package firestorestructs
 import domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 
 type OperationToStore struct {
-	ProjectID   int
+	ProjectID   int64
 	OperationIs string
 	OperandsAre domainstructs.Operation
-	ResultIs    domainstructs.Result
+	Result      domainstructs.Result
 }

@@ -5,22 +5,27 @@ import (
 	"os"
 
 	"cloud.google.com/go/firestore"
-	firebase "firebase.google.com/go"
-	cmdadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/adapters/driver/CmdAdapter"
+	firestoreadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/adapters/driven/FirestoreAdapter"
+	muxadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/adapters/driver/HttpAdapter"
 	timmyadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/TimmyAdapter"
-	"google.golang.org/api/option"
 )
 
 func main() {
 
-	_, err := setEnvVariables()
+	client, err := setEnvVariables()
 
 	if err != nil {
 		panic(err)
 	}
 
-	domainPort := timmyadapter.CreateTimmyAdapter()
-	driverHandler := cmdadapter.CreateCmdAdapter(domainPort)
+	domainAdapter := timmyadapter.CreateTimmyAdapter()
+	drivenHandler, err := firestoreadapter.CreateFirestoreAdapter(client)
+
+	if err != nil {
+		panic(err)
+	}
+
+	driverHandler := muxadapter.CreateMuxAdapter(domainAdapter, drivenHandler)
 	driverHandler.ListenAndServe()
 
 }
@@ -33,26 +38,30 @@ func setEnvVariables() (client *firestore.Client, err error) {
 		return
 	}
 
-	err = os.Setenv("FirestoreProjectID", "ChangeThisValue")
+	err = os.Setenv("FirestoreProjectID", "goodfriendtimmy")
+
+	err = os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/Users/alejandrowaiz/Desktop/goodfriendtimmy/ServiceAccountKey.json")
 
 	if err != nil {
 		return
 	}
 
 	//Variables here are used if and only if firestore will be used. If dont, dont use ''Client'' return vale in main func.
-	sa := option.WithCredentialsFile("./ServiceAccountKey.json")
-	app, err := firebase.NewApp(context.Background(), nil, sa)
+	//sa := option.WithCredentialsFile("/Users/alejandrowaiz/Desktop/goodfriendtimmy/ServiceAccountKey.json")
+	c, _ := firestore.NewClient(context.Background(), "goodfriendtimmy")
 
 	if err != nil {
 		return
 	}
 
-	client, err = app.Firestore(context.Background())
+	return c, nil
 
-	if err != nil {
-		return
-	}
+	//	client, err = app.Firestore(context.Background())
 
-	return client, nil
+	//	if err != nil {
+	//		return
+	//	}
+
+	//	return client, nil
 
 }
