@@ -35,11 +35,6 @@ func setEnvVariables() (client *firestore.Client, err error) {
 
 	err = godotenv.Load()
 
-	if err != nil {
-		return
-	}
-
-	//sa := option.WithCredentialsFile("/Users/alejandrowaiz/Desktop/goodfriendtimmy/ServiceAccountKey.json")
 	c, err := firestore.NewClient(context.Background(), os.Getenv("goodfriendtimmy"))
 
 	if err != nil {
