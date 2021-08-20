@@ -15,9 +15,9 @@ import (
 func TestMultiply(t *testing.T) {
 
 	testTable := []struct {
-		FirstOperand  float64 `json:",omitempty"`
-		SecondOperand float64 `json:",omitempty"`
-		ExpResult     float64
+		FirstOperand  int64 `json:",omitempty"`
+		SecondOperand int64 `json:",omitempty"`
+		ExpResult     int64
 		ExpHttpStatus int
 		ExpHttpHeader string
 		ExpBody       domainstructs.Result

@@ -9,7 +9,7 @@ func TestComprobeNumberInput(t *testing.T) {
 
 	testCases := []struct {
 		text     string
-		expValue float64
+		expValue int64
 		expErr   bool
 	}{
 		{text: "5", expErr: false, expValue: 5},

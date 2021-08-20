@@ -8,7 +8,7 @@ import (
 	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 )
 
-func (cmd *CmdAdapter) StartCalculatorLoop(readOp, firstValue, secondValue io.Reader) (float64, error) {
+func (cmd *CmdAdapter) StartCalculatorLoop(readOp, firstValue, secondValue io.Reader) (int64, error) {
 
 	var operation domainstructs.Operation
 

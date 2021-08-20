@@ -5,54 +5,47 @@ import (
 	"os"
 
 	"cloud.google.com/go/firestore"
-	firebase "firebase.google.com/go"
-	cmdadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/adapters/driver/CmdAdapter"
+	firestoreadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/adapters/driven/FirestoreAdapter"
+	muxadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/adapters/driver/HttpAdapter"
 	timmyadapter "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/TimmyAdapter"
-	"google.golang.org/api/option"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 
-	_, err := setEnvVariables()
+	client, err := setEnvVariables()
 
 	if err != nil {
 		panic(err)
 	}
 
-	domainPort := timmyadapter.CreateTimmyAdapter()
-	driverHandler := cmdadapter.CreateCmdAdapter(domainPort)
+	domainAdapter := timmyadapter.CreateTimmyAdapter()
+	drivenHandler, err := firestoreadapter.CreateFirestoreAdapter(client)
+
+	if err != nil {
+		panic(err)
+	}
+
+	driverHandler := muxadapter.CreateMuxAdapter(domainAdapter, drivenHandler)
 	driverHandler.ListenAndServe()
 
 }
 
 func setEnvVariables() (client *firestore.Client, err error) {
 
-	err = os.Setenv("MuxPort", "3000")
+	err = godotenv.Load()
 
 	if err != nil {
 		return
 	}
 
-	err = os.Setenv("FirestoreProjectID", "ChangeThisValue")
+	//sa := option.WithCredentialsFile("/Users/alejandrowaiz/Desktop/goodfriendtimmy/ServiceAccountKey.json")
+	c, err := firestore.NewClient(context.Background(), os.Getenv("goodfriendtimmy"))
 
 	if err != nil {
 		return
 	}
 
-	//Variables here are used if and only if firestore will be used. If dont, dont use ''Client'' return vale in main func.
-	sa := option.WithCredentialsFile("./ServiceAccountKey.json")
-	app, err := firebase.NewApp(context.Background(), nil, sa)
-
-	if err != nil {
-		return
-	}
-
-	client, err = app.Firestore(context.Background())
-
-	if err != nil {
-		return
-	}
-
-	return client, nil
+	return c, nil
 
 }

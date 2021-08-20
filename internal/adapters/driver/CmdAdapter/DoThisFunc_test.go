@@ -13,9 +13,9 @@ func TestDoThisFunc(t *testing.T) {
 	testTable := []struct {
 		caseName      string
 		operation     string
-		FirstOperand  float64
-		SecondOperand float64
-		ExpResult     int
+		FirstOperand  int64
+		SecondOperand int64
+		ExpResult     int64
 		ExpError      bool
 	}{
 		{"Normal add", "add", 1, 1, 2, false},
@@ -41,7 +41,7 @@ func TestDoThisFunc(t *testing.T) {
 
 		}
 
-		if response != float64(testCase.ExpResult) {
+		if response != testCase.ExpResult {
 
 			t.Errorf("Expected %v result, got %v on %v", testCase.ExpResult, response, testCase.caseName)
 

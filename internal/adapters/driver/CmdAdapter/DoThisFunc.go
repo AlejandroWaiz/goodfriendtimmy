@@ -6,7 +6,7 @@ import (
 	domainstructs "github.com/AlejandroWaiz/goodfriendtimmy/internal/domain/Structs"
 )
 
-func (cmd *CmdAdapter) doThis(operation string, firstValue float64, secondValue float64) (response float64, err error) {
+func (cmd *CmdAdapter) doThis(operation string, firstValue int64, secondValue int64) (response int64, err error) {
 
 	operands := domainstructs.Operation{FirstOperand: firstValue, SecondOperand: secondValue}
 

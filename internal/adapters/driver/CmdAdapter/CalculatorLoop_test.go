@@ -23,7 +23,7 @@ func TestStartCalculatorLoop(t *testing.T) {
 		op        operation
 		name      string
 		expErr    bool
-		expResult float64
+		expResult int64
 	}{
 		{name: "Normal add", expResult: 11, op: operation{firstNumber: "5", secondNumber: "6", operation: "add"}},
 		{name: "Normal multiply", expResult: 15, op: operation{firstNumber: "5", secondNumber: "3", operation: "multiply"}},

@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func comprobeNumberInput(r io.Reader) (value float64, err error) {
+func comprobeNumberInput(r io.Reader) (value int64, err error) {
 
 	readThis := bufio.NewScanner(r)
 
@@ -14,15 +14,13 @@ func comprobeNumberInput(r io.Reader) (value float64, err error) {
 
 	input := readThis.Text()
 
-	intInput, err := strconv.Atoi(input)
-
-	value = float64(intInput)
+	convertedInput, _ := strconv.ParseInt(input, 10, 64)
 
 	if err != nil {
 		return
 	}
 
-	return value, err
+	return convertedInput, err
 
 }
 
